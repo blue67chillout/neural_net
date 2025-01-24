@@ -31,7 +31,7 @@ module tb_fifo_memory;
     wire empty;
     wire full;
 
-    // Instantiate the FIFO memory module
+   
     fifo_memory #(
         .DATA_IN_WIDTH(16),
         .DATA_OUT_WIDTH(4),

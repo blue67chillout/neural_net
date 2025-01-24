@@ -1,6 +1,6 @@
-module rom_weights #(
+module rom #(
                     
-    ADDR_WIDTH = 8,
+    ADDR_WIDTH = 2,
     DATA_OUT_WIDTH = 16,
     MEM_FILE = "weights.mem") (
 
@@ -11,8 +11,9 @@ module rom_weights #(
     input r_en
                     
     );
-
-    reg [DATA_OUT_WIDTH-1:0]mem[ADDR_WIDTH-1:0];
+    
+    integer i = 0;
+    reg [DATA_OUT_WIDTH-1:0]mem[(1 << ADDR_WIDTH)-1:0];
 
     initial begin
         $readmemh(MEM_FILE, mem);
@@ -21,9 +22,7 @@ module rom_weights #(
     always@(posedge clk) begin
         if(rst) begin
             data_out <= 0;
-            for (int i = 0; i < 8; i = i + 1) begin
-                mem[i] <= 0;
-            end
+
         end
         else if(r_en ) begin
             data_out <= mem[addr];

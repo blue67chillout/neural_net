@@ -3,6 +3,65 @@
 // ipn -> inputs per node
 
 
+// +-------------------------------+
+// |          IDLE                  |
+// |                                |
+// |  Output: arb_en = 0            |
+// |  Next State: MEM (if feed_through = 0) |
+// |                                |
+// +-------------------------------+
+//             |
+//             | feed_through == 0
+//             v 
+// +-------------------------------+
+// |          MEM                   |
+// |                                |
+// |  Output: arb_en = 1            |
+// |  Next State: MAC (if fetch_mem_cyc_counter == NO_IPN-1) |
+// |                                |
+// +-------------------------------+
+//             |
+//             | fetch_mem_cyc_counter == NO_IPN-1
+//             v
+// +-------------------------------+
+// |          MAC                   |
+// |                                |
+// |  Output: mac_en = 1            |
+// |  Next State: BIAS (if mac_cyc_counter == NO_IPN-1) |
+// |                                |
+// +-------------------------------+
+//             |
+//             | mac_cyc_counter == NO_IPN-1
+//             v
+// +-------------------------------+
+// |          BIAS                  |
+// |                                |
+// |  Output: bias_add_en = 1       |
+// |  Next State: ACT (if bias_cyc_counter == NO_NPL-1) |
+// |                                |
+// +-------------------------------+
+//             |
+//             | bias_cyc_counter == NO_NPL-1
+//             v
+// +-------------------------------+
+// |          ACT                   |
+// |                                |
+// |  Output: act_fn_en = 1         |
+// |  Next State: IDLE (if act_cyc_counter == NO_NPL-1) |
+// |                                |
+// +-------------------------------+
+//             |
+//             | act_cyc_counter == NO_NPL-1
+//             v
+// +-------------------------------+
+// |          IDLE                  |
+// |                                |
+// |  Output: arb_en = 0            |
+// |  Next State: MEM (if feed_through = 0) |
+// |                                |
+// +-------------------------------+
+
+
 module layer_ctrl #(NO_NPL = 4, NO_IPN =4 )(
 
     input clk,
